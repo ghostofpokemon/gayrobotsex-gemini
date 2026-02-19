@@ -1,0 +1,11 @@
+{
+  "name": "openclaw-site",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "bun x serve ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

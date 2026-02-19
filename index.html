@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenClaw</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #player {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    <script>
+        window.RufflePlayer = window.RufflePlayer || {};
+        window.addEventListener("load", (event) => {
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            const container = document.getElementById("player");
+            container.appendChild(player);
+            
+            // Load the SWF file
+            // Replace 'main.swf' with your actual Flash file name
+            player.load("main.swf").catch((e) => {
+                console.warn("SWF not found or failed to load. Please add 'main.swf' to the directory.");
+                container.innerHTML = "<div style='text-align:center; padding-top: 20%; font-family: monospace;'><h1>OpenClaw</h1><p>Flash content missing (main.swf)</p></div>";
+            });
+        });
+    </script>
+</body>
+</html>
