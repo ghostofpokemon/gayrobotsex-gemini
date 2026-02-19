@@ -5,20 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OpenClaw</title>
     <style>
-        body {
+        html, body {
             margin: 0;
             padding: 0;
-            background-color: #000;
-            color: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             overflow: hidden;
+            background-color: #000;
         }
+
         #player {
             width: 100%;
             height: 100%;
+            display: block;
+        }
+
+        /* 
+           To simulate the "crunchy" pixel look of 2004 on a 4K screen,
+           we can force nearest-neighbor interpolation if the SWF contains bitmaps.
+           For vectors, Ruffle handles the rendering.
+        */
+        canvas {
+            image-rendering: pixelated; 
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
     </style>
 </head>
@@ -28,18 +38,23 @@
     <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
     <script>
         window.RufflePlayer = window.RufflePlayer || {};
+        window.RufflePlayer.config = {
+            splashScreen: false,  // Absolutely no loading animation
+            autoplay: "on",
+            unmuteOverlay: "hidden",
+            backgroundColor: "#000000",
+            letterbox: "on",      // Fills screen, keeping aspect ratio (black bars if needed)
+            scale: "showAll",     // Ensures the content is visible within the viewport
+            forceScale: true,
+        };
+
         window.addEventListener("load", (event) => {
             const ruffle = window.RufflePlayer.newest();
             const player = ruffle.createPlayer();
             const container = document.getElementById("player");
             container.appendChild(player);
             
-            // Load the SWF file
-            // Replace 'main.swf' with your actual Flash file name
-            player.load("main.swf").catch((e) => {
-                console.warn("SWF not found or failed to load. Please add 'main.swf' to the directory.");
-                container.innerHTML = "<div style='text-align:center; padding-top: 20%; font-family: monospace;'><h1>OpenClaw</h1><p>Flash content missing (main.swf)</p></div>";
-            });
+            player.load("main.swf");
         });
     </script>
 </body>
